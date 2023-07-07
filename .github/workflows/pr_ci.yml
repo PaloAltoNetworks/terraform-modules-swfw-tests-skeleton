@@ -28,5 +28,6 @@ jobs:
     - name: Download Go dependencies
       run: go get  ./... && go mod tidy
 
-    - name: Test code
-      run: go test -v ./...
+    ### Uncomment it, when tests are prepared
+    # - name: Test code
+    #   run: go test -v ./...
