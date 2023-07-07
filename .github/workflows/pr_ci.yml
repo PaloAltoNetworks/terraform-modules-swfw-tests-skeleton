@@ -2,12 +2,10 @@
 #  A workflow used to get Go dependencies and test code
 # END
 
-name: Go CI
+name: PR CI
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
   pull_request:
     types:
       - opened
