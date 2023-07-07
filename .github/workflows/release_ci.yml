@@ -39,9 +39,7 @@ jobs:
   release:
     name: release sem version
     needs:
-      - validate
-      - pre_commit
-      - plan_apply
+      - release-prereqs
     runs-on: ubuntu-latest
     permissions:
       contents: write
