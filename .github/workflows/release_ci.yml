@@ -1,0 +1,61 @@
+name: Release CI
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 1 * * 4' # this means every Thursday @1am UTC
+
+jobs:
+  release-prereqs:
+    name: Verify if a release is required
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: read
+    outputs:
+      rc: ${{ steps.rc.outputs.new_release_published }}
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: dry-run sem versioning
+        id: rc
+        uses: cycjimmy/semantic-release-action@v3
+        with:
+          dry_run: true
+          semantic_version: 19.0
+          extra_plugins: |
+            conventional-changelog-conventionalcommits@^5.0.0
+            @semantic-release/git@^10.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: sem ver outputs
+        run: |
+          echo new_release_published - ${{ steps.rc.outputs.new_release_published }}
+          echo new_release_version - ${{ steps.rc.outputs.new_release_version }}
+          echo last_release_version - ${{ steps.rc.outputs.last_release_version }}
+
+  release:
+    name: release sem version
+    needs:
+      - validate
+      - pre_commit
+      - plan_apply
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: read
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v3
+
+      - name: Create release and publish
+        uses: cycjimmy/semantic-release-action@v3
+        with:
+          semantic_version: 19.0
+          extra_plugins: |
+            conventional-changelog-conventionalcommits@^5.0.0
+            @semantic-release/git@^10.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
