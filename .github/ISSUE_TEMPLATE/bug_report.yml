@@ -11,9 +11,9 @@ body:
       required: true
   - type: input
     attributes:
-      label: Module Version
-      description: What is the module version in use (https://github.com/PaloAltoNetworks/terraform-aws-vmseries-modules/releases)? Please include the commit hash if you're using an unreleased version.
-      placeholder: eg. v0.4.1
+      label: Test skeleton version
+      description: What is the test skeleton version in use (https://github.com/PaloAltoNetworks/terraform-modules-vmseries-tests-skeleton/releases)? Please include the commit hash if you're using an unreleased version.
+      placeholder: eg. v0.1.2
     validations:
       required: true
   - type: input
@@ -21,6 +21,13 @@ body:
       label: Terraform version
       description: What is the Terraform version in use?
       placeholder: Execute terraform -version
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: Terratest version
+      description: What is the Terratest version in use?
+      placeholder: Execute go list -m all | grep terratest
     validations:
       required: false
   - type: textarea
