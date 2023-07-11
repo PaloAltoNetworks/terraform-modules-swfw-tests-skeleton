@@ -1,4 +1,4 @@
-package centralized_design
+package vmseries_example_plan_and_deploy
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 	"github.com/gruntwork-io/terratest/modules/terraform"
 )
 
-func TestExampleStandaloneVmseries(t *testing.T) {
+func TestVmseriesExamplePlanAndDeploy(t *testing.T) {
 	// prepare random prefix
 	source := rand.NewSource(time.Now().UnixNano())
 	random := rand.New(source)
