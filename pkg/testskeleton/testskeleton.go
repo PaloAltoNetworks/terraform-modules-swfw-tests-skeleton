@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	tfjson "github.com/hashicorp/terraform-json"
@@ -55,6 +56,48 @@ type AdditionalChangesAfterDeployment struct {
 	UseVarFiles          []string
 	FileNameWithTfCode   string
 	ChangedResources     []ChangedResource
+}
+
+// Structure used for Azure deployments - contains randomly generated resource names.
+type AzureRandomNames struct {
+	NamePrefix         string
+	ResourceGroupName  string
+	StorageAccountName string
+}
+
+// Function that generates and returns a set of random Azure resource names.
+// Randomization is based on UUID.
+func GenerateAzureRandomNames() AzureRandomNames {
+	id := uuid.New().String()
+	idSliced := strings.Split(id, "-")
+
+	prefixId := idSliced[2]
+	gid := idSliced[0:2]
+	storageId := idSliced[3:5]
+
+	names := AzureRandomNames{
+		NamePrefix:         fmt.Sprintf("ghci%s-", prefixId),
+		ResourceGroupName:  strings.Join(gid, ""),
+		StorageAccountName: fmt.Sprintf("ghci%s", strings.Join(storageId, "")),
+	}
+
+	return names
+}
+
+// Function running only only code validation.
+func ValidateCode(t *testing.T, terraformOptions *terraform.Options) *terraform.Options {
+	if terraformOptions == nil {
+		terraformOptions = terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+			TerraformDir: ".",
+			Logger:       logger.Default,
+			Lock:         true,
+			Upgrade:      true,
+		})
+	}
+
+	terraform.InitAndValidate(t, terraformOptions)
+
+	return terraformOptions
 }
 
 // Function is responsible for deployment of the infrastructure,
