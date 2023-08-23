@@ -28,6 +28,16 @@ jobs:
     - name: Download Go dependencies
       run: go get  ./... && go mod tidy
 
+    - name: Check if all dependencies were commited
+      shell: bash
+      run: |
+          if [ "$(git status --porcelain)" ]; then 
+            git status
+            exit 1
+          else
+            exit 0
+          fi
+
     ### Uncomment it, when tests are prepared
     # - name: Test code
     #   run: go test -v ./...
