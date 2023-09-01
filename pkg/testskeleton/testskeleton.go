@@ -68,6 +68,11 @@ type AzureRandomNames struct {
 // Function that generates and returns a set of random Azure resource names.
 // Randomization is based on UUID.
 func GenerateAzureRandomNames() AzureRandomNames {
+	prid := os.Getenv("PRID")
+	if prid != "" {
+		prid = fmt.Sprintf("-pr%s-", prid)
+	}
+
 	id := uuid.New().String()
 	idSliced := strings.Split(id, "-")
 
@@ -76,7 +81,7 @@ func GenerateAzureRandomNames() AzureRandomNames {
 	storageId := idSliced[3:5]
 
 	names := AzureRandomNames{
-		NamePrefix:         fmt.Sprintf("ghci%s-", prefixId),
+		NamePrefix:         fmt.Sprintf("ghci%s%s-", prid, prefixId),
 		ResourceGroupName:  strings.Join(gid, ""),
 		StorageAccountName: fmt.Sprintf("ghci%s", strings.Join(storageId, "")),
 	}
