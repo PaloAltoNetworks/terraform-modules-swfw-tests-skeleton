@@ -68,7 +68,9 @@ type AwsRandomNames struct {
 func GenerateAwRandomNames() AwsRandomNames {
 	prid := os.Getenv("PRID")
 	if prid != "" {
-		prid = fmt.Sprintf("-pr%s-", prid)
+		prid = fmt.Sprintf("pr%s", prid)
+	} else {
+		prid = "tt"
 	}
 
 	id := uuid.New().String()
@@ -77,7 +79,7 @@ func GenerateAwRandomNames() AwsRandomNames {
 	prefixId := idSliced[2]
 
 	names := AwsRandomNames{
-		NamePrefix: fmt.Sprintf("tt%s%s-", prid, prefixId),
+		NamePrefix: fmt.Sprintf("%s-%s-", prid, prefixId),
 	}
 
 	return names
