@@ -65,7 +65,7 @@ type AwsRandomNames struct {
 
 // Function that generates and returns a set of random AWS resource names.
 // Randomization is based on UUID.
-func GenerateAwRandomNames() AzureRandomNames {
+func GenerateAwRandomNames() AwsRandomNames {
 	prid := os.Getenv("PRID")
 	if prid != "" {
 		prid = fmt.Sprintf("-pr%s-", prid)
