@@ -58,6 +58,33 @@ type AdditionalChangesAfterDeployment struct {
 	ChangedResources     []ChangedResource
 }
 
+// Structure used for AWS deployments - contains randomly generated resource names.
+type AwsRandomNames struct {
+	NamePrefix string
+}
+
+// Function that generates and returns a set of random AWS resource names.
+// Randomization is based on UUID.
+func GenerateAwRandomNames() AwsRandomNames {
+	prid := os.Getenv("PRID")
+	if prid != "" {
+		prid = fmt.Sprintf("pr%s", prid)
+	} else {
+		prid = "tt"
+	}
+
+	id := uuid.New().String()
+	idSliced := strings.Split(id, "-")
+
+	prefixId := idSliced[2]
+
+	names := AwsRandomNames{
+		NamePrefix: fmt.Sprintf("%s-%s-", prid, prefixId),
+	}
+
+	return names
+}
+
 // Structure used for Azure deployments - contains randomly generated resource names.
 type AzureRandomNames struct {
 	NamePrefix         string
