@@ -68,7 +68,7 @@ type AwsRandomNames struct {
 func GenerateAwRandomNames() AwsRandomNames {
 	prid := os.Getenv("PRID")
 	if prid != "" {
-		prid = fmt.Sprintf("pr%s", prid)
+		prid = fmt.Sprintf("p%s", prid)
 	} else {
 		prid = "tt"
 	}
