@@ -58,14 +58,17 @@ type AdditionalChangesAfterDeployment struct {
 	ChangedResources     []ChangedResource
 }
 
-// Structure used for AWS deployments - contains randomly generated resource names.
-type AwsRandomNames struct {
-	NamePrefix string
+// Structure used for terraform tfvars input information,
+// not all options are used in all public cloud environments
+type TerraformVarsInfo struct {
+	NamePrefix              string
+	AzureResourceGroupName  string
+	AzureStorageAccountName string
+	GCPProjectID            string
 }
 
-// Function that generates and returns a set of random AWS resource names.
-// Randomization is based on UUID.
-func GenerateAwRandomNames() AwsRandomNames {
+// Function that generates and returns information used by Terraform TFVARS.
+func GenerateTerraformVarsInfo() TerraformVarsInfo {
 	prid := os.Getenv("PRID")
 	if prid != "" {
 		prid = fmt.Sprintf("p%s", prid)
@@ -73,32 +76,7 @@ func GenerateAwRandomNames() AwsRandomNames {
 		prid = "tt"
 	}
 
-	id := uuid.New().String()
-	idSliced := strings.Split(id, "-")
-
-	prefixId := idSliced[2]
-
-	names := AwsRandomNames{
-		NamePrefix: fmt.Sprintf("%s-%s-", prid, prefixId),
-	}
-
-	return names
-}
-
-// Structure used for Azure deployments - contains randomly generated resource names.
-type AzureRandomNames struct {
-	NamePrefix         string
-	ResourceGroupName  string
-	StorageAccountName string
-}
-
-// Function that generates and returns a set of random Azure resource names.
-// Randomization is based on UUID.
-func GenerateAzureRandomNames() AzureRandomNames {
-	prid := os.Getenv("PRID")
-	if prid != "" {
-		prid = fmt.Sprintf("-pr%s-", prid)
-	}
+	project_id := os.Getenv("PROJECT_ID")
 
 	id := uuid.New().String()
 	idSliced := strings.Split(id, "-")
@@ -107,10 +85,11 @@ func GenerateAzureRandomNames() AzureRandomNames {
 	gid := idSliced[0:2]
 	storageId := idSliced[3:5]
 
-	names := AzureRandomNames{
-		NamePrefix:         fmt.Sprintf("ghci%s%s-", prid, prefixId),
-		ResourceGroupName:  strings.Join(gid, ""),
-		StorageAccountName: fmt.Sprintf("ghci%s", strings.Join(storageId, "")),
+	names := TerraformVarsInfo{
+		NamePrefix:              fmt.Sprintf("%s-%s-", prid, prefixId),
+		AzureResourceGroupName:  strings.Join(gid, ""),
+		AzureStorageAccountName: fmt.Sprintf("ghci%s", strings.Join(storageId, "")),
+		GCPProjectID:            project_id,
 	}
 
 	return names
