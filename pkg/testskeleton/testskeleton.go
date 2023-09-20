@@ -64,7 +64,7 @@ type TerraformVarsInfo struct {
 	NamePrefix              string
 	AzureResourceGroupName  string
 	AzureStorageAccountName string
-	GCPProjectID            string
+	GoogleProjectId         string
 }
 
 // Function that generates and returns information used by Terraform TFVARS.
@@ -89,7 +89,7 @@ func GenerateTerraformVarsInfo() TerraformVarsInfo {
 		NamePrefix:              fmt.Sprintf("%s-%s-", prid, prefixId),
 		AzureResourceGroupName:  strings.Join(gid, ""),
 		AzureStorageAccountName: fmt.Sprintf("ghci%s", strings.Join(storageId, "")),
-		GoogleProjectId:            projectId,
+		GoogleProjectId:         projectId,
 	}
 
 	return names
