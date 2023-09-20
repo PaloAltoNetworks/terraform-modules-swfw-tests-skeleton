@@ -76,7 +76,7 @@ func GenerateTerraformVarsInfo() TerraformVarsInfo {
 		prid = "tt"
 	}
 
-	project_id := os.Getenv("PROJECT_ID")
+	projectId := os.Getenv("PROJECT_ID")
 
 	id := uuid.New().String()
 	idSliced := strings.Split(id, "-")
