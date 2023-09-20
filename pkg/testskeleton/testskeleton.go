@@ -89,7 +89,7 @@ func GenerateTerraformVarsInfo() TerraformVarsInfo {
 		NamePrefix:              fmt.Sprintf("%s-%s-", prid, prefixId),
 		AzureResourceGroupName:  strings.Join(gid, ""),
 		AzureStorageAccountName: fmt.Sprintf("ghci%s", strings.Join(storageId, "")),
-		GCPProjectID:            project_id,
+		GoogleProjectId:            projectId,
 	}
 
 	return names
