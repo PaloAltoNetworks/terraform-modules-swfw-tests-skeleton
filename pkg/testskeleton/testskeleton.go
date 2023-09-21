@@ -86,7 +86,7 @@ func GenerateTerraformVarsInfo(cloud string) (TerraformVarsInfo, error) {
 			prid = "tt"
 		}
 		names = TerraformVarsInfo{
-			NamePrefix:              fmt.Sprintf("%s-%s-", prid, prefixId),
+			NamePrefix: fmt.Sprintf("%s-%s-", prid, prefixId),
 		}
 	} else if cloud == "azure" {
 		if prid != "" {
@@ -107,8 +107,8 @@ func GenerateTerraformVarsInfo(cloud string) (TerraformVarsInfo, error) {
 		}
 
 		names = TerraformVarsInfo{
-			NamePrefix:              fmt.Sprintf("ghci%s%s-", prid, prefixId),
-			GoogleProjectId:         projectId,
+			NamePrefix:      fmt.Sprintf("ghci%s%s-", prid, prefixId),
+			GoogleProjectId: projectId,
 		}
 	} else {
 		// If no cloud is provided - throw an error
