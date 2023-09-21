@@ -68,15 +68,9 @@ type TerraformVarsInfo struct {
 }
 
 // Function that generates and returns information used by Terraform TFVARS.
-func GenerateTerraformVarsInfo() TerraformVarsInfo {
+func GenerateTerraformVarsInfo(cloud string) (TerraformVarsInfo, error) {
 	prid := os.Getenv("PRID")
-	if prid != "" {
-		prid = fmt.Sprintf("p%s", prid)
-	} else {
-		prid = "tt"
-	}
-
-	projectId := os.Getenv("PROJECT_ID")
+	var names TerraformVarsInfo
 
 	id := uuid.New().String()
 	idSliced := strings.Split(id, "-")
@@ -85,14 +79,43 @@ func GenerateTerraformVarsInfo() TerraformVarsInfo {
 	gid := idSliced[0:2]
 	storageId := idSliced[3:5]
 
-	names := TerraformVarsInfo{
-		NamePrefix:              fmt.Sprintf("%s-%s-", prid, prefixId),
-		AzureResourceGroupName:  strings.Join(gid, ""),
-		AzureStorageAccountName: fmt.Sprintf("ghci%s", strings.Join(storageId, "")),
-		GoogleProjectId:         projectId,
+	if cloud == "aws" {
+		if prid != "" {
+			prid = fmt.Sprintf("p%s", prid)
+		} else {
+			prid = "tt"
+		}
+		names = TerraformVarsInfo{
+			NamePrefix:              fmt.Sprintf("%s-%s-", prid, prefixId),
+		}
+	} else if cloud == "azure" {
+		if prid != "" {
+			prid = fmt.Sprintf("-pr%s-", prid)
+		}
+
+		names = TerraformVarsInfo{
+			NamePrefix:              fmt.Sprintf("ghci%s%s-", prid, prefixId),
+			AzureResourceGroupName:  strings.Join(gid, ""),
+			AzureStorageAccountName: fmt.Sprintf("ghci%s", strings.Join(storageId, "")),
+		}
+	} else if cloud == "gcp" {
+		projectId := os.Getenv("PROJECT_ID")
+		if prid != "" {
+			prid = fmt.Sprintf("p%s", prid)
+		} else {
+			prid = "tt"
+		}
+
+		names = TerraformVarsInfo{
+			NamePrefix:              fmt.Sprintf("ghci%s%s-", prid, prefixId),
+			GoogleProjectId:         projectId,
+		}
+	} else {
+		// If no cloud is provided - throw an error
+		return TerraformVarsInfo{}, fmt.Errorf("Wrong cloud input provided %s", cloud)
 	}
 
-	return names
+	return names, nil
 }
 
 // Function running only only code validation.
