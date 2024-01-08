@@ -1,7 +1,7 @@
 ### VPCS ###
 
 module "vpc" {
-  source = "github.com/PaloAltoNetworks/terraform-aws-swfw-modules//modules/vpc"
+  source = "github.com/PaloAltoNetworks/terraform-aws-vmseries-modules//modules/vpc"
 
   for_each = var.vpcs
 
@@ -19,7 +19,7 @@ module "vpc" {
 
 module "subnet_sets" {
   for_each = toset(flatten([for _, v in { for vk, vv in var.vpcs : vk => distinct([for sk, sv in vv.subnets : "${vk}-${sv.set}"]) } : v]))
-  source   = "github.com/PaloAltoNetworks/terraform-aws-swfw-modules//modules/subnet_set"
+  source   = "github.com/PaloAltoNetworks/terraform-aws-vmseries-modules//modules/subnet_set"
 
   name                = split("-", each.key)[1]
   vpc_id              = module.vpc[split("-", each.key)[0]].id
@@ -64,7 +64,7 @@ locals {
 
 module "vpc_routes" {
   for_each = { for route in local.vpc_routes : "${route.subnet_key}_${route.to_cidr}" => route }
-  source   = "github.com/PaloAltoNetworks/terraform-aws-swfw-modules//modules/vpc_route"
+  source   = "github.com/PaloAltoNetworks/terraform-aws-vmseries-modules//modules/vpc_route"
 
   route_table_ids = module.subnet_sets[each.value.subnet_key].unique_route_table_ids
   to_cidr         = each.value.to_cidr
@@ -132,7 +132,7 @@ locals {
 
 module "vmseries" {
   for_each = { for vmseries in local.vmseries_instances : "${vmseries.group}-${vmseries.instance}" => vmseries }
-  source   = "github.com/PaloAltoNetworks/terraform-aws-swfw-modules//modules/vmseries"
+  source   = "github.com/PaloAltoNetworks/terraform-aws-vmseries-modules//modules/vmseries"
 
   name             = "${var.name_prefix}${each.key}"
   vmseries_version = each.value.common.panos_version
