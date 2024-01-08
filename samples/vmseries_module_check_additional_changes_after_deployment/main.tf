@@ -6,7 +6,7 @@ resource "random_string" "random_sufix" {
 
 # Test security VPC
 module "security_vpc" {
-  source = "github.com/PaloAltoNetworks/terraform-aws-vmseries-modules//modules/vpc"
+  source = "github.com/PaloAltoNetworks/terraform-aws-swfw-modules//modules/vpc"
 
   name                    = "${var.name_prefix}${random_string.random_sufix.id}"
   cidr_block              = var.security_vpc_cidr
@@ -19,7 +19,7 @@ module "security_vpc" {
 
 # Subnets configured in test security VPC
 module "security_subnet_sets" {
-  source = "github.com/PaloAltoNetworks/terraform-aws-vmseries-modules//modules/subnet_set"
+  source = "github.com/PaloAltoNetworks/terraform-aws-swfw-modules//modules/subnet_set"
 
   for_each = toset(distinct([for _, v in var.security_vpc_subnets : v.set]))
 
@@ -33,7 +33,7 @@ module "security_subnet_sets" {
 # Routes configured in test security VPC
 module "security_vpc_routes" {
   for_each = { for route in local.security_vpc_routes : "${route.subnet_key}_${route.to_cidr}" => route }
-  source   = "github.com/PaloAltoNetworks/terraform-aws-vmseries-modules//modules/vpc_route"
+  source   = "github.com/PaloAltoNetworks/terraform-aws-swfw-modules//modules/vpc_route"
 
   route_table_ids = module.security_subnet_sets[each.value.subnet_key].unique_route_table_ids
   to_cidr         = each.value.to_cidr
@@ -43,7 +43,7 @@ module "security_vpc_routes" {
 # Optinal S3 bucket for bootstrapping
 module "bootstrap" {
   count              = var.use_s3_bucket_to_bootstrap ? 1 : 0
-  source             = "github.com/PaloAltoNetworks/terraform-aws-vmseries-modules//modules/bootstrap"
+  source             = "github.com/PaloAltoNetworks/terraform-aws-swfw-modules//modules/bootstrap"
   prefix             = local.bucket_name_prefix
   global_tags        = var.global_tags
   plugin-op-commands = var.plugin_op_commands
@@ -52,7 +52,7 @@ module "bootstrap" {
 # VM-Series deployed for tests
 module "vmseries" {
   for_each = var.vmseries
-  source   = "github.com/PaloAltoNetworks/terraform-aws-vmseries-modules//modules/vmseries"
+  source   = "github.com/PaloAltoNetworks/terraform-aws-swfw-modules//modules/vmseries"
 
   name              = "${var.name_prefix}${random_string.random_sufix.id}${var.name_sufix}"
   ssh_key_name      = aws_key_pair.generated_key.key_name
