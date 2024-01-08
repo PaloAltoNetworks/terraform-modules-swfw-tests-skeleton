@@ -12,7 +12,7 @@ locals {
 
 module "panorama_vpc_routes" {
   for_each = { for route in local.panorama_vpc_routes : "${route.subnet_key}_${route.to_cidr}" => route }
-  source  = "github.com/PaloAltoNetworks/terraform-aws-vmseries-modules//modules/vpc_route"
+  source  = "github.com/PaloAltoNetworks/terraform-aws-swfw-modules//modules/vpc_route"
 
   next_hop_set    = each.value.next_hop_set
   route_table_ids = module.security_subnet_sets[each.value.subnet_key].unique_route_table_ids
