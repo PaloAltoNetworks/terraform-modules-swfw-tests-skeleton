@@ -1,4 +1,4 @@
-module github.com/PaloAltoNetworks/terraform-modules-swfw-tests-skeleton
+module github.com/PaloAltoNetworks/terraform-modules-vmseries-tests-skeleton
 
 go 1.20
 

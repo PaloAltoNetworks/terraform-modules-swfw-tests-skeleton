@@ -2,13 +2,10 @@
 
 ## Description
 
-Test skeleton with Terratest in Go used to execute integration and e2e tests for Software Firewall modules:
+Test skeleton with Terratest in Go used to execute integration and e2e tests for VM-Series modules:
 - [terraform-aws-vmseries-modules](https://github.com/PaloAltoNetworks/terraform-aws-vmseries-modules)
 - [terraform-azurerm-vmseries-modules](https://github.com/PaloAltoNetworks/terraform-azurerm-vmseries-modules)
 - [terraform-google-vmseries-modules](https://github.com/PaloAltoNetworks/terraform-google-vmseries-modules)
-- [terraform-aws-swfw-modules](https://github.com/PaloAltoNetworks/terraform-aws-swfw-modules)
-- [terraform-azurerm-swfw-modules](https://github.com/PaloAltoNetworks/terraform-azurerm-swfw-modules)
-- [terraform-google-swfw-modules](https://github.com/PaloAltoNetworks/terraform-google-swfw-modules)
 
 ## Usage
 

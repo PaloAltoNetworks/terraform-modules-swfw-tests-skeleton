@@ -1,7 +1,7 @@
 name: Bug Report
 description: Create an issue to help us improve
-title: "[Bug Report] <Short title of the bug>"
-assignees: aws-swfw-modules-codeowners
+title: '[Bug Report] <Short title of the bug>'
+assignees: aws-vmseries-modules-codeowners
 body:
   - type: textarea
     attributes:
@@ -12,7 +12,7 @@ body:
   - type: input
     attributes:
       label: Test skeleton version
-      description: What is the test skeleton version in use (https://github.com/PaloAltoNetworks/terraform-modules-swfw-tests-skeleton/releases)? Please include the commit hash if you're using an unreleased version.
+      description: What is the test skeleton version in use (https://github.com/PaloAltoNetworks/terraform-modules-vmseries-tests-skeleton/releases)? Please include the commit hash if you're using an unreleased version.
       placeholder: eg. v0.1.2
     validations:
       required: true
