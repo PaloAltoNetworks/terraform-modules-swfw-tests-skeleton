@@ -65,6 +65,7 @@ type TerraformVarsInfo struct {
 	AzureResourceGroupName  string
 	AzureStorageAccountName string
 	GoogleProjectId         string
+	GoogleOrgId             string
 }
 
 // Function that generates and returns information used by Terraform TFVARS.
@@ -100,6 +101,7 @@ func GenerateTerraformVarsInfo(cloud string) (TerraformVarsInfo, error) {
 		}
 	} else if cloud == "gcp" {
 		projectId := os.Getenv("PROJECT_ID")
+		orgId := os.Getenv("ORG_ID")
 		if prid != "" {
 			prid = fmt.Sprintf("p%s", prid)
 		} else {
@@ -109,6 +111,7 @@ func GenerateTerraformVarsInfo(cloud string) (TerraformVarsInfo, error) {
 		names = TerraformVarsInfo{
 			NamePrefix:      fmt.Sprintf("ghci%s%s-", prid, prefixId),
 			GoogleProjectId: projectId,
+			GoogleOrgId:     orgId,
 		}
 	} else {
 		// If no cloud is provided - throw an error
