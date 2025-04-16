@@ -3,7 +3,7 @@ name: Release CI
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 1 * * 4' # this means every Thursday @1am UTC
+    - cron: "0 1 * * 4" # this means every Thursday @1am UTC
 
 jobs:
   release-prereqs:
@@ -25,8 +25,8 @@ jobs:
           dry_run: true
           semantic_version: 19.0
           extra_plugins: |
-            conventional-changelog-conventionalcommits@^5.0.0
-            @semantic-release/git@^10.0.1
+            https://gitpkg.vercel.app/conventional-changelog/conventional-changelog/packages/conventional-changelog-conventionalcommits?ba6df7cf62de5f448368bed4398f6ddf633d2cbd
+            semantic-release/git#3e934d45f97fd07a63617c0fc098c9ed3e67d97a
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -53,7 +53,7 @@ jobs:
         with:
           semantic_version: 19.0
           extra_plugins: |
-            conventional-changelog-conventionalcommits@^5.0.0
-            @semantic-release/git@^10.0.1
+            https://gitpkg.vercel.app/conventional-changelog/conventional-changelog/packages/conventional-changelog-conventionalcommits?ba6df7cf62de5f448368bed4398f6ddf633d2cbd
+            semantic-release/git#3e934d45f97fd07a63617c0fc098c9ed3e67d97a
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
